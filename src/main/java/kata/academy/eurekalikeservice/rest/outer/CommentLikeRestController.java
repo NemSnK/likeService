@@ -36,7 +36,6 @@ public class CommentLikeRestController {
 
     private  final CommentLikeService commentLikeService;
 
-
     @Operation(summary = "Создание нового commentLike")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Новый commentLike успешно создан"),
@@ -49,7 +48,6 @@ public class CommentLikeRestController {
         ApiValidationUtil.requireTrue(commentLikeService.existsByCommentId(commentId), String.format("Comment by id %d not found", commentId));
         return Response.ok(commentLikeService.addCommentLike(CommentLikeMapper.toEntity(dto), commentId, userId));
     }
-
 
     @Operation(summary = "Эндпоинт для обновление существующего commentLike")
     @ApiResponses(value = {
@@ -64,9 +62,7 @@ public class CommentLikeRestController {
         Optional<CommentLike> commentLike = commentLikeService.findByCommentIdAndIdAndUserId(commentId, commentLikeId, userId);
         ApiValidationUtil.requireTrue(commentLike.isPresent(), String.format("CommentLike by id %d not found", commentLikeId));
         return Response.ok(commentLikeService.updateCommentLike(CommentLikeMapper.toEntity(commentLike.get(), dto)));
-
     }
-
 
     @Operation(summary = "Удаление commentLike")
     @ApiResponses(value = {
