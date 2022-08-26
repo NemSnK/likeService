@@ -3,11 +3,12 @@ package kata.academy.eurekalikeservice.service;
 import kata.academy.eurekalikeservice.model.entity.PostLike;
 
 public interface PostLikeService {
+
     PostLike addPostLike(PostLike postLike);
 
     PostLike updatePostLike(PostLike postLike);
 
-    void deletePostLikeByPostLikeId(Long postLikeId);
+    void deleteById(Long postId);
 
-    boolean existsByIdAndUserIdAndPostId(Long postLikeId, Long userId, Long postId);
+    boolean existsByIdAndPostIdAndUserId(Long postLikeId, Long postId, Long userId);
 }

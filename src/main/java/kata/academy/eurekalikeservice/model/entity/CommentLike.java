@@ -12,28 +12,42 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "comments_likes")
+@Table(name = "comment_likes")
 public class CommentLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @NotNull
     @Column(nullable = false)
-    Long commentId;
+    private Long commentId;
 
     @NotNull
     @Column(nullable = false)
-    Long userId;
+    private Long userId;
 
     @NotNull
     @Column(nullable = false)
-    Boolean positive;
+    private Boolean positive;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CommentLike that = (CommentLike) o;
+        return Objects.equals(id, that.id) && Objects.equals(commentId, that.commentId) && Objects.equals(userId, that.userId) && Objects.equals(positive, that.positive);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, commentId, userId, positive);
+    }
 }

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 @Service
-public class PostLikeServiceImp implements PostLikeService {
+public class PostLikeServiceImpl implements PostLikeService {
 
     private final PostLikeRepository postLikeRepository;
 
@@ -25,14 +25,13 @@ public class PostLikeServiceImp implements PostLikeService {
     }
 
     @Override
-    public void deletePostLikeByPostLikeId(Long postLikeId) {
-        postLikeRepository.deleteById(postLikeId);
+    public void deleteById(Long postId) {
+        postLikeRepository.deleteById(postId);
     }
-
 
     @Transactional(readOnly = true)
     @Override
-    public boolean existsByIdAndUserIdAndPostId(Long postLikeId, Long userId, Long postId) {
-        return postLikeRepository.existsByIdAndUserIdAndPostId(postLikeId, userId, postId);
+    public boolean existsByIdAndPostIdAndUserId(Long postLikeId, Long postId, Long userId) {
+        return postLikeRepository.existsByIdAndPostIdAndUserId(postLikeId, postId, userId);
     }
 }
