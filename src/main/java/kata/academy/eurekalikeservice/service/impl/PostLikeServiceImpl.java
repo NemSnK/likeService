@@ -34,4 +34,8 @@ public class PostLikeServiceImpl implements PostLikeService {
     public boolean existsByIdAndPostIdAndUserId(Long postLikeId, Long postId, Long userId) {
         return postLikeRepository.existsByIdAndPostIdAndUserId(postLikeId, postId, userId);
     }
+    @Override
+    public void deleteAllByPostId(Long postId){
+        postLikeRepository.deleteAllByPostId(postId);
+    }
 }

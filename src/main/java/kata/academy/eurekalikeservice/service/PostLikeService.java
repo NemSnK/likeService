@@ -11,4 +11,6 @@ public interface PostLikeService {
     void deleteById(Long postId);
 
     boolean existsByIdAndPostIdAndUserId(Long postLikeId, Long postId, Long userId);
+
+    void deleteAllByPostId(Long postId);
 }
