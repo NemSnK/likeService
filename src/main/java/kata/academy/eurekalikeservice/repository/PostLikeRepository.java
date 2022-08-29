@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
 
     boolean existsByIdAndPostIdAndUserId(Long postLikeId, Long postId, Long userId);
+
+    void deleteAllByPostId(Long postId);
 }
