@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -29,13 +31,15 @@ public class PostLikeServiceImpl implements PostLikeService {
         postLikeRepository.deleteById(postId);
     }
 
+    @Override
+    public void deleteByPostId(Long postId) {
+        List<Long> postLikeIds = postLikeRepository.findAllIdsByPostId(postId);
+        postLikeRepository.deleteAllByIdInBatch(postLikeIds);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public boolean existsByIdAndPostIdAndUserId(Long postLikeId, Long postId, Long userId) {
         return postLikeRepository.existsByIdAndPostIdAndUserId(postLikeId, postId, userId);
-    }
-    @Override
-    public void deleteAllByPostId(Long postId){
-        postLikeRepository.deleteAllByPostId(postId);
     }
 }
