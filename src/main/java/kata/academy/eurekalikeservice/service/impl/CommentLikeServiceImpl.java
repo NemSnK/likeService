@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -27,6 +29,12 @@ public class CommentLikeServiceImpl implements CommentLikeService {
     @Override
     public void deleteById(Long commentLikeId) {
         commentLikeRepository.deleteById(commentLikeId);
+    }
+
+    @Override
+    public void deleteByCommentId(Long commentId) {
+        List<Long> commentLikeIds = commentLikeRepository.findAllIdsByCommentId(commentId);
+        commentLikeRepository.deleteAllByIdInBatch(commentLikeIds);
     }
 
     @Transactional(readOnly = true)
