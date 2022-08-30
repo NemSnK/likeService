@@ -1,7 +1,6 @@
 package kata.academy.eurekalikeservice.rest.inner;
 
 import kata.academy.eurekalikeservice.service.CommentLikeService;
-import kata.academy.eurekalikeservice.service.PostLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
