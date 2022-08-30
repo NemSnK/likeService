@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kata.academy.eurekalikeservice.api.Response;
-import kata.academy.eurekalikeservice.feign.ContentServiceFeignClient;
+import kata.academy.eurekalikeservice.feign.client.ContentServiceFeignClient;
 import kata.academy.eurekalikeservice.model.converter.PostLikeMapper;
 import kata.academy.eurekalikeservice.model.dto.PostLikePersistRequestDto;
 import kata.academy.eurekalikeservice.model.dto.PostLikeUpdateRequestDto;
