@@ -1,7 +1,7 @@
 package kata.academy.eurekalikeservice.rest.outer;
 
 import kata.academy.eurekalikeservice.api.Response;
-import kata.academy.eurekalikeservice.feign.client.ContentServiceFeignClient;
+import kata.academy.eurekalikeservice.feign.ContentServiceFeignClient;
 import kata.academy.eurekalikeservice.model.converter.CommentLikeMapper;
 import kata.academy.eurekalikeservice.model.dto.CommentLikePersistRequestDto;
 import kata.academy.eurekalikeservice.model.dto.CommentLikeUpdateRequestDto;
