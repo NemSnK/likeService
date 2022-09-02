@@ -6,10 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Validated
@@ -22,6 +24,12 @@ public class CommentLikeInternalRestController {
     @DeleteMapping("/{commentId}/comment-likes")
     public ResponseEntity<Void> deleteByCommentId(@PathVariable @Positive Long commentId) {
         commentLikeService.deleteByCommentId(commentId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/comment-likes")
+    ResponseEntity<Void> deleteAllByCommentIds(@RequestBody List<Long> commentIds) {
+        commentLikeService.deleteAllByCommentIds(commentIds);
         return ResponseEntity.ok().build();
     }
 }

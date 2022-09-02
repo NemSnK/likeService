@@ -29,6 +29,7 @@ public class PostLike {
     @NotNull
     @Column(nullable = false)
     private Long postId;
+
     @NotNull
     @Column(nullable = false)
     private Long userId;

@@ -42,4 +42,10 @@ public class CommentLikeServiceImpl implements CommentLikeService {
     public boolean existsByIdAndCommentIdAndUserId(Long commentLikeId, Long commentId, Long userId) {
         return commentLikeRepository.existsByIdAndCommentIdAndUserId(commentLikeId, commentId, userId);
     }
+
+    @Override
+    public void deleteAllByCommentIds(List<Long> commentIds) {
+        List<Long> commentLikeIds = commentLikeRepository.findAllIdsByCommentIds(commentIds);
+        commentLikeRepository.deleteAllByIdInBatch(commentLikeIds);
+    }
 }
