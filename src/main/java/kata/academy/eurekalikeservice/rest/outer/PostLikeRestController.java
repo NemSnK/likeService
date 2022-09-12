@@ -1,9 +1,5 @@
 package kata.academy.eurekalikeservice.rest.outer;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import kata.academy.eurekalikeservice.api.Response;
 import kata.academy.eurekalikeservice.feign.ContentServiceFeignClient;
 import kata.academy.eurekalikeservice.model.converter.PostLikeMapper;
@@ -26,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
-@Tag(name = "PostLikeRestController", description = "Контроллер для работы с лайками поста")
 @RequiredArgsConstructor
 @Validated
 @RestController
@@ -36,11 +31,6 @@ public class PostLikeRestController {
     private final PostLikeService postLikeService;
     private final ContentServiceFeignClient contentServiceFeignClient;
 
-    @Operation(summary = "Эндпойнт для добавления лайка, или дизлайка посту")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Лайк или дизлайк добавле"),
-            @ApiResponse(responseCode = "400", description = "Клиент допустил ошибки в запросе")
-    })
     @PostMapping("/{postId}/post-likes")
     public Response<PostLike> addPostLike(@RequestBody @Valid PostLikePersistRequestDto dto,
                                           @PathVariable @Positive Long postId,
@@ -52,11 +42,6 @@ public class PostLikeRestController {
         return Response.ok(postLikeService.addPostLike(postLike));
     }
 
-    @Operation(summary = "Эндпойнт для обновления лайка или дизлайка")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Лайк или дизлайк обновлён"),
-            @ApiResponse(responseCode = "400", description = "Клиент допустил ошибки в запросе")
-    })
     @PutMapping("/{postId}/post-likes/{postLikeId}")
     public Response<PostLike> updatePostLike(@RequestBody @Valid PostLikeUpdateRequestDto dto,
                                              @PathVariable @Positive Long postId,
@@ -70,11 +55,6 @@ public class PostLikeRestController {
         return Response.ok(postLikeService.updatePostLike(postLike));
     }
 
-    @Operation(summary = "Эндпойнт для удаления лайка или дизлайка")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Лайк или дизлайк удалён"),
-            @ApiResponse(responseCode = "400", description = "Клиент допустил ошибки в запросе")
-    })
     @DeleteMapping("/{postId}/post-likes/{postLikeId}")
     public Response<Void> deletePostLike(@PathVariable @Positive Long postId,
                                          @PathVariable @Positive Long postLikeId,
