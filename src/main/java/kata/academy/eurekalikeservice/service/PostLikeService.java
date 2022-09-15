@@ -13,4 +13,5 @@ public interface PostLikeService {
     boolean existsByIdAndPostIdAndUserId(Long postLikeId, Long postId, Long userId);
 
     void deleteByPostId(Long postId);
+    Integer getPostLikeCount(Long postId, Boolean positive);
 }
