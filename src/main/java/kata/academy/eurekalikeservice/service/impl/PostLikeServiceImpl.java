@@ -7,37 +7,46 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
-
-@CacheConfig
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "post-like-count")
 @Transactional
 @Service
 public class PostLikeServiceImpl implements PostLikeService {
 
     private final PostLikeRepository postLikeRepository;
 
+    @CacheEvict(key = "#postLike.postId + '-' + #postLike.positive")
     @Override
-    @CacheEvict(value = "count", key = "#postLike.postId.toString() + #postLike.positive.toString()")
     public PostLike addPostLike(PostLike postLike) {
         return postLikeRepository.save(postLike);
     }
 
+    @Caching(evict = {
+            @CacheEvict(key = "#postLike.postId + '-' + true"),
+            @CacheEvict(key = "#postLike.postId + '-' + false")
+    })
     @Override
-    @CacheEvict(value = "count", key = "#postLike.postId.toString() + #postLike.positive.toString()")
     public PostLike updatePostLike(PostLike postLike) {
         return postLikeRepository.save(postLike);
     }
 
+    @CacheEvict(key = "#postLike.postId + '-' + #postLike.positive")
     @Override
-    public void deleteById(Long postId) {
-        postLikeRepository.deleteById(postId);
+    public void delete(PostLike postLike) {
+        postLikeRepository.delete(postLike);
     }
 
+    @Caching(evict = {
+            @CacheEvict(key = "#postId + '-' + true"),
+            @CacheEvict(key = "#postId + '-' + false")
+    })
     @Override
     public void deleteByPostId(Long postId) {
         List<Long> postLikeIds = postLikeRepository.findAllIdsByPostId(postId);
@@ -50,10 +59,16 @@ public class PostLikeServiceImpl implements PostLikeService {
         return postLikeRepository.existsByIdAndPostIdAndUserId(postLikeId, postId, userId);
     }
 
+    @Cacheable(key = "#postId + '-' + #positive", unless = "#result < 100")
     @Transactional(readOnly = true)
-    @Cacheable(value = "count", key = "#postId.toString() + #positive.toString()")
     @Override
-    public Integer getPostLikeCount(Long postId, Boolean positive) {
-        return postLikeRepository.countAllByPostIdAndPositive(postId, positive);
+    public int countByPostIdAndPositive(Long postId, Boolean positive) {
+        return postLikeRepository.countByPostIdAndPositive(postId, positive);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<PostLike> findByIdAndPostIdAndUserId(Long postLikeId, Long postId, Long userId) {
+        return postLikeRepository.findByIdAndPostIdAndUserId(postLikeId, postId, userId);
     }
 }

@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -21,7 +20,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "post_likes")
-public class PostLike implements Serializable {
+public class PostLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

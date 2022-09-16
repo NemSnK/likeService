@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
 
@@ -17,5 +18,7 @@ public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
                                 """)
     List<Long> findAllIdsByPostId(Long postId);
 
-    Integer countAllByPostIdAndPositive(Long postId, Boolean positive);
+    int countByPostIdAndPositive(Long postId, Boolean positive);
+
+    Optional<PostLike> findByIdAndPostIdAndUserId(Long postLikeId, Long postId, Long userId);
 }
