@@ -11,6 +11,7 @@ import kata.academy.eurekalikeservice.util.ApiValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Validated
@@ -59,8 +61,17 @@ public class CommentLikeRestController {
     public Response<Void> deleteCommentLike(@PathVariable @Positive Long commentId,
                                             @PathVariable @Positive Long commentLikeId,
                                             @RequestParam @Positive Long userId) {
-        ApiValidationUtil.requireTrue(commentLikeService.existsByIdAndCommentIdAndUserId(commentLikeId, commentId, userId), String.format("Лайк комментария с commentLikeId %d, commentId %d, userId %d нет в базе данных", commentLikeId, commentId, userId));
-        commentLikeService.deleteById(commentLikeId);
+        Optional<CommentLike> commentLikeOptional = commentLikeService.findByIdAndCommentIdAndUserId(commentLikeId, commentId, userId);
+        ApiValidationUtil.requireTrue(commentLikeOptional.isPresent(), String.format("Лайк комментария с commentLikeId %d, commentId %d, userId %d нет в базе данных", commentLikeId, commentId, userId));
+        commentLikeService.delete(commentLikeOptional.get());
         return Response.ok();
+    }
+
+    @GetMapping("/{commentId}/comment-likes/count")
+    public Response<Integer> getPostLikeCount(@PathVariable @Positive Long commentId,
+                                              @RequestParam Boolean positive,
+                                              @RequestParam @Positive Long userId) {
+        ApiValidationUtil.requireTrue(contentServiceFeignClient.existsByCommentId(commentId).getBody(), String.format("Комментарий с таким commentId %d не существует в базе данных", commentId));
+        return Response.ok(commentLikeService.countByCommentIdAndPositive(commentId, positive));
     }
 }
