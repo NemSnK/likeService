@@ -48,4 +48,9 @@ public class CommentLikeServiceImpl implements CommentLikeService {
         List<Long> commentLikeIds = commentLikeRepository.findAllIdsByCommentIds(commentIds);
         commentLikeRepository.deleteAllByIdInBatch(commentLikeIds);
     }
+
+    @Override
+    public boolean existsByCommentIdAndUserId(Long commentId, Long userId) {
+        return commentLikeRepository.existsByCommentIdAndUserId(commentId,userId);
+    }
 }

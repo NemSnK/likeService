@@ -10,14 +10,7 @@ import kata.academy.eurekalikeservice.service.CommentLikeService;
 import kata.academy.eurekalikeservice.util.ApiValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -35,7 +28,10 @@ public class CommentLikeRestController {
     public Response<CommentLike> addCommentLike(@RequestBody @Valid CommentLikePersistRequestDto dto,
                                                 @PathVariable @Positive Long commentId,
                                                 @RequestParam @Positive Long userId) {
-        ApiValidationUtil.requireTrue(contentServiceFeignClient.existsByCommentId(commentId).getBody(), String.format("Комментарий с таким commentId %d не существует в базе данных", commentId));
+        ApiValidationUtil.requireTrue(contentServiceFeignClient.existsByCommentId(commentId).getBody(),
+                String.format("Комментарий с таким commentId %d не существует в базе данных", commentId));
+        ApiValidationUtil.requireFalse(commentLikeService.existsByCommentIdAndUserId(commentId,userId),
+                String.format("Пользователь userId %d уже поставил лайк на комментарий commentId %d",userId,commentId));
         CommentLike commentLike = CommentLikeMapper.toEntity(dto);
         commentLike.setCommentId(commentId);
         commentLike.setUserId(userId);

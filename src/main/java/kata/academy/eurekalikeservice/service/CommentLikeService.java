@@ -17,4 +17,6 @@ public interface CommentLikeService {
     boolean existsByIdAndCommentIdAndUserId(Long commentLikeId, Long commentId, Long userId);
 
     void deleteAllByCommentIds(List<Long> commentIds);
+
+    boolean existsByCommentIdAndUserId(Long commentId, Long userId);
 }
