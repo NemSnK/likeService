@@ -11,6 +11,7 @@ import kata.academy.eurekalikeservice.util.ApiValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Validated
@@ -62,8 +64,17 @@ public class PostLikeRestController {
     public Response<Void> deletePostLike(@PathVariable @Positive Long postId,
                                          @PathVariable @Positive Long postLikeId,
                                          @RequestParam @Positive Long userId) {
-        ApiValidationUtil.requireTrue(postLikeService.existsByIdAndPostIdAndUserId(postLikeId, postId, userId), String.format("Лайк поста с postLikeId %d, postId %d, userId %d нет в базе данных", postLikeId, postId, userId));
-        postLikeService.deleteById(postLikeId);
+        Optional<PostLike> postLikeOptional = postLikeService.findByIdAndPostIdAndUserId(postLikeId, postId, userId);
+        ApiValidationUtil.requireTrue(postLikeOptional.isPresent(), String.format("Лайк поста с postLikeId %d, postId %d, userId %d нет в базе данных", postLikeId, postId, userId));
+        postLikeService.delete(postLikeOptional.get());
         return Response.ok();
+    }
+
+    @GetMapping("/{postId}/post-likes/count")
+    public Response<Integer> getPostLikeCount(@PathVariable @Positive Long postId,
+                                              @RequestParam Boolean positive,
+                                              @RequestParam @Positive Long userId) {
+        ApiValidationUtil.requireTrue(contentServiceFeignClient.existsByPostId(postId).getBody(), String.format("Пост с таким postId %d не существует в базе данных", postId));
+        return Response.ok(postLikeService.countByPostIdAndPositive(postId, positive));
     }
 }
