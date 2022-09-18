@@ -16,4 +16,16 @@ public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
             WHERE pl.postId = :postId
                                 """)
     List<Long> findAllIdsByPostId(Long postId);
+
+    @Query(
+            """
+                    SELECT pl.postId
+                    FROM PostLike pl
+                    WHERE pl.positive = true
+                    GROUP BY pl.postId
+                    ORDER BY count (pl.id)
+                    DESC
+                    """
+    )
+    List<Long> getPostsByLikesAmount(Integer count);
 }

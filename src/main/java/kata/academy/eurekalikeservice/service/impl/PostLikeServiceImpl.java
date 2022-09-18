@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
@@ -29,6 +30,11 @@ public class PostLikeServiceImpl implements PostLikeService {
     @Override
     public void deleteById(Long postId) {
         postLikeRepository.deleteById(postId);
+    }
+
+    @Override
+    public List<Long> getPostsByLikesAmount(Integer count) {
+        return postLikeRepository.getPostsByLikesAmount(count).stream().limit(count).collect(Collectors.toList());
     }
 
     @Override
