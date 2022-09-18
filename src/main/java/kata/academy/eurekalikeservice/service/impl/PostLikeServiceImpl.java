@@ -12,18 +12,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-<<<<<<< HEAD
 import java.util.stream.Collectors;
-=======
 import java.util.Optional;
->>>>>>> 6295f3338493c7ef16d8969e27c23daafcd6ef35
+
 
 @RequiredArgsConstructor
 @CacheConfig(cacheNames = "post-like-count")
 @Transactional
 @Service
 public class PostLikeServiceImpl implements PostLikeService {
-
     private final PostLikeRepository postLikeRepository;
 
     @CacheEvict(key = "#postLike.postId + '-' + #postLike.positive")
