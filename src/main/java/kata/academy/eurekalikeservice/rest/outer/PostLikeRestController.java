@@ -37,7 +37,10 @@ public class PostLikeRestController {
     public Response<PostLike> addPostLike(@RequestBody @Valid PostLikePersistRequestDto dto,
                                           @PathVariable @Positive Long postId,
                                           @RequestParam @Positive Long userId) {
-        ApiValidationUtil.requireTrue(contentServiceFeignClient.existsByPostId(postId).getBody(), String.format("Пост с таким postId %d не существует в базе данных", postId));
+        ApiValidationUtil.requireTrue(contentServiceFeignClient.existsByPostId(postId).getBody(),
+                String.format("Пост с таким postId %d не существует в базе данных", postId));
+        ApiValidationUtil.requireFalse(postLikeService.existsByPostIdAndUserId(postId,userId),
+                String.format("Пользователь userId %d уже лайкнул пост postId %d",userId,postId));
         PostLike postLike = PostLikeMapper.toEntity(dto);
         postLike.setPostId(postId);
         postLike.setUserId(userId);
