@@ -53,6 +53,7 @@ public class PostLikeServiceImpl implements PostLikeService {
         postLikeRepository.deleteAllByIdInBatch(postLikeIds);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean existsByPostIdAndUserId(Long postId, Long userId) {
         return postLikeRepository.existsByPostIdAndUserId(postId,userId);

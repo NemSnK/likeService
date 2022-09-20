@@ -79,6 +79,7 @@ public class CommentLikeServiceImpl implements CommentLikeService {
         return commentLikeRepository.countByCommentIdAndPositive(commentId, positive);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean existsByCommentIdAndUserId(Long commentId, Long userId) {
         return commentLikeRepository.existsByCommentIdAndUserId(commentId,userId);
