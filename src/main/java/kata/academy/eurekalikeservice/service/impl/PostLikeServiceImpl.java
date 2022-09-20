@@ -56,7 +56,7 @@ public class PostLikeServiceImpl implements PostLikeService {
     @Transactional(readOnly = true)
     @Override
     public boolean existsByPostIdAndUserId(Long postId, Long userId) {
-        return postLikeRepository.existsByPostIdAndUserId(postId,userId);
+        return postLikeRepository.existsByPostIdAndUserId(postId, userId);
     }
 
     @Transactional(readOnly = true)
