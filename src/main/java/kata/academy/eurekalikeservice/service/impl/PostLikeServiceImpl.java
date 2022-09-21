@@ -49,8 +49,8 @@ public class PostLikeServiceImpl implements PostLikeService {
             @CacheEvict(key = "#postId + '-' + false")
     })
     @Override
-    public List<Long> getPostsByLikesAmount(Integer count) {
-        return postLikeRepository.getPostsByLikesAmount(count).stream().limit(count).collect(Collectors.toList());
+    public List<Long> getTopPostIdsByCount(Integer count) {
+        return postLikeRepository.getTopPostIdsByCount(count).stream().limit(count).collect(Collectors.toList());
     }
 
     @Override

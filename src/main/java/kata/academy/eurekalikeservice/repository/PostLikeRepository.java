@@ -27,10 +27,9 @@ public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
                     WHERE pl.positive = true
                     GROUP BY pl.postId
                     ORDER BY count (pl.id)
-                    DESC
                     """
     )
-    List<Long> getPostsByLikesAmount(Integer count);
+    List<Long> getTopPostIdsByCount(Integer maxCount);
 
     int countByPostIdAndPositive(Long postId, Boolean positive);
 
