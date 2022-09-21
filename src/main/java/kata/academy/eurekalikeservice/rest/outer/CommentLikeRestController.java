@@ -37,7 +37,10 @@ public class CommentLikeRestController {
     public Response<CommentLike> addCommentLike(@RequestBody @Valid CommentLikePersistRequestDto dto,
                                                 @PathVariable @Positive Long commentId,
                                                 @RequestParam @Positive Long userId) {
-        ApiValidationUtil.requireTrue(contentServiceFeignClient.existsByCommentId(commentId).getBody(), String.format("Комментарий с таким commentId %d не существует в базе данных", commentId));
+        ApiValidationUtil.requireTrue(contentServiceFeignClient.existsByCommentId(commentId).getBody(),
+                String.format("Комментарий с таким commentId %d не существует в базе данных", commentId));
+        ApiValidationUtil.requireFalse(commentLikeService.existsByCommentIdAndUserId(commentId, userId),
+                String.format("Пользователь userId %d уже поставил лайк на комментарий commentId %d", userId, commentId));
         CommentLike commentLike = CommentLikeMapper.toEntity(dto);
         commentLike.setCommentId(commentId);
         commentLike.setUserId(userId);

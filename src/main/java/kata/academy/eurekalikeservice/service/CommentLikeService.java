@@ -19,6 +19,8 @@ public interface CommentLikeService {
 
     void deleteAllByCommentIds(List<Long> commentIds);
 
+    boolean existsByCommentIdAndUserId(Long commentId, Long userId);
+
     Optional<CommentLike> findByIdAndCommentIdAndUserId(Long commentLikeId, Long commentId, Long userId);
 
     int countByCommentIdAndPositive(Long commentId, Boolean positive);
