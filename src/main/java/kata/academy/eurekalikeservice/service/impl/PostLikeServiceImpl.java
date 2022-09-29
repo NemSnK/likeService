@@ -48,6 +48,10 @@ public class PostLikeServiceImpl implements PostLikeService {
         return postLikeRepository.getTopPostIdsByCount(count);
     }
 
+    @Caching(evict = {
+            @CacheEvict(key = "#postId + '-' + true"),
+            @CacheEvict(key = "#postId + '-' + false")
+    })
     @Override
     public void deleteByPostId(Long postId) {
         List<Long> postLikeIds = postLikeRepository.findAllIdsByPostId(postId);
