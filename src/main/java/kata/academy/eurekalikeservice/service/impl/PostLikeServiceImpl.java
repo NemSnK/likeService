@@ -19,7 +19,6 @@ import java.util.Optional;
 @Transactional
 @Service
 public class PostLikeServiceImpl implements PostLikeService {
-
     private final PostLikeRepository postLikeRepository;
 
     @CacheEvict(key = "#postLike.postId + '-' + #postLike.positive")
@@ -43,10 +42,12 @@ public class PostLikeServiceImpl implements PostLikeService {
         postLikeRepository.delete(postLike);
     }
 
-    @Caching(evict = {
-            @CacheEvict(key = "#postId + '-' + true"),
-            @CacheEvict(key = "#postId + '-' + false")
-    })
+    @Transactional(readOnly = true)
+    @Override
+    public List<Long> getTopPostIdsByCount(Integer count) {
+        return postLikeRepository.getTopPostIdsByCount(count);
+    }
+
     @Override
     public void deleteByPostId(Long postId) {
         List<Long> postLikeIds = postLikeRepository.findAllIdsByPostId(postId);
