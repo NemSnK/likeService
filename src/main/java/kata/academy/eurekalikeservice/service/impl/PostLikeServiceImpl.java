@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Optional;
-
 
 @RequiredArgsConstructor
 @CacheConfig(cacheNames = "post-like-count")
@@ -44,13 +42,10 @@ public class PostLikeServiceImpl implements PostLikeService {
         postLikeRepository.delete(postLike);
     }
 
-    @Caching(evict = {
-            @CacheEvict(key = "#postId + '-' + true"),
-            @CacheEvict(key = "#postId + '-' + false")
-    })
+    @Transactional(readOnly = true)
     @Override
     public List<Long> getTopPostIdsByCount(Integer count) {
-        return postLikeRepository.getTopPostIdsByCount(count).stream().limit(count).collect(Collectors.toList());
+        return postLikeRepository.getTopPostIdsByCount(count);
     }
 
     @Override

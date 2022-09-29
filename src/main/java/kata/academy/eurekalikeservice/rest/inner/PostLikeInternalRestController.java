@@ -29,7 +29,7 @@ public class PostLikeInternalRestController {
     }
 
     @GetMapping("/post-likes")
-    public ResponseEntity<List<Long>> getTopPosts(@RequestParam(defaultValue = "100") @Positive Integer count) {
+    public ResponseEntity<List<Long>> getTopPostIdsByCount(@RequestParam(defaultValue = "100") @Positive Integer count) {
         return ResponseEntity.ok(postLikeService.getTopPostIdsByCount(count));
     }
 }

@@ -20,16 +20,16 @@ public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
                                 """)
     List<Long> findAllIdsByPostId(Long postId);
 
-    @Query(
+    @Query(nativeQuery = true, value =
             """
-                    SELECT pl.postId
-                    FROM PostLike pl
+                    SELECT pl.post_id
+                    FROM post_likes pl
                     WHERE pl.positive = true
-                    GROUP BY pl.postId
-                    ORDER BY count (pl.id)
-                    """
-    )
-    List<Long> getTopPostIdsByCount(Integer maxCount);
+                    GROUP BY pl.post_id
+                    ORDER BY COUNT(pl.id) DESC
+                    LIMIT :count
+                    """)
+    List<Long> getTopPostIdsByCount(Integer count);
 
     int countByPostIdAndPositive(Long postId, Boolean positive);
 
