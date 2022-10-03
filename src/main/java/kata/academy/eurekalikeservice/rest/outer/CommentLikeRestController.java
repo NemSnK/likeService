@@ -71,9 +71,9 @@ public class CommentLikeRestController {
     }
 
     @GetMapping("/{commentId}/comment-likes/count")
-    public Response<Integer> getPostLikeCount(@PathVariable @Positive Long commentId,
-                                              @RequestParam Boolean positive,
-                                              @RequestParam @Positive Long userId) {
+    public Response<Integer> getCommentLikeCount(@PathVariable @Positive Long commentId,
+                                                 @RequestParam Boolean positive,
+                                                 @RequestParam @Positive Long userId) {
         ApiValidationUtil.requireTrue(contentServiceFeignClient.existsByCommentId(commentId).getBody(), String.format("Комментарий с таким commentId %d не существует в базе данных", commentId));
         return Response.ok(commentLikeService.countByCommentIdAndPositive(commentId, positive));
     }
